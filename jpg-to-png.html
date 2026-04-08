@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPG to PNG Converter</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;padding:0 20px}
+.box{border:1px solid #eee;padding:24px;border-radius:12px}
+input,button,a{padding:12px;width:100%;margin:10px 0;border-radius:8px}
+a{background:#28a745;color:white;text-decoration:none;display:block;text-align:center}
+</style>
+</head>
+<body>
+<h1>JPG to PNG Converter</h1>
+
+<!-- 中部广告 -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-你的ID" data-ad-slot="你的广告位ID" data-ad-format="auto"></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+
+<div class="box">
+<input type="file" accept="image/*" id="f">
+<button onclick="go()">Convert to PNG</button>
+<a id="down" download="converted.png"></a>
+</div>
+
+<script>
+function go(){
+const f=document.getElementById('f').files[0]
+if(!f)return
+const i=new Image()
+i.src=URL.createObjectURL(f)
+i.onload=()=>{
+const c=document.createElement('canvas')
+c.width=i.width,c.height=i.height
+c.getContext('2d').drawImage(i,0,0)
+document.getElementById('down').href=c.toDataURL('image/png')
+document.getElementById('down').innerText='Download PNG'
+}}
+</script>
+</body>
+</html>

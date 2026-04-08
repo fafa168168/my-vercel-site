@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Compressor - Free Online Tool</title>
+<style>
+*{box-sizing:border-box}
+body{
+  font-family:Arial,sans-serif;
+  max-width:750px;
+  margin:40px auto;
+  padding:0 20px;
+  line-height:1.5
+}
+.box{
+  border:1px solid #eee;
+  padding:24px;
+  border-radius:12px;
+  margin:20px 0;
+}
+input,button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+button{
+  background:#007bff;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+#status{
+  margin:10px 0;
+  color:#333;
+}
+#download{
+  display:inline-block;
+  padding:10px 16px;
+  background:#28a745;
+  color:white;
+  text-decoration:none;
+  border-radius:8px;
+  margin-top:10px;
+}
+</style>
+
+<!-- AdSense 全局脚本（换成你自己的 ca-pub-XXX） -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-你的ID" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<h1>PDF Compressor</h1>
+<p>Compress PDF files online for free, no installation required.</p>
+
+<!-- 顶部 AdSense 广告位 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-你的ID"
+     data-ad-slot="你的广告位ID"
+     data-ad-format="auto">
+</ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+
+<div class="box">
+  <input type="file" id="pdfFile" accept="application/pdf">
+  <button onclick="compressPDF()">Compress PDF</button>
+  <div id="status"></div>
+  <a id="download" style="display:none">Download Compressed PDF</a>
+</div>
+
+<!-- PDF 压缩库 -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://unpkg.com/downloadjs@1.4.7/download.js"></script>
+
+<script>
+async function compressPDF() {
+  const fileInput = document.getElementById('pdfFile');
+  const status = document.getElementById('status');
+  const downloadBtn = document.getElementById('download');
+
+  if (!fileInput.files.length) {
+    alert('Please select a PDF file');
+    return;
+  }
+
+  status.textContent = 'Processing...';
+  downloadBtn.style.display = 'none';
+
+  try {
+    const file = fileInput.files[0];
+    const arrayBuffer = await file.arrayBuffer();
+
+    // 加载并压缩 PDF
+    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+    const compressedPdfBytes = await pdfDoc.save({
+      useObjectStreams: true,
+      compress: true
+    });
+
+    // 下载
+    download(compressedPdfBytes, 'compressed.pdf', 'application/pdf');
+    status.textContent = 'Compression completed!';
+    downloadBtn.style.display = 'inline-block';
+  } catch (e) {
+    console.error(e);
+    status.textContent = 'Compression failed';
+  }
+}
+</script>
+
+</body>
+</html>
